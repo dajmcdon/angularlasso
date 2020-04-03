@@ -18,17 +18,13 @@
 #' probed by oligonucleotide arrays'', \emph{Proc. Natl. Acad. Sci. USA},
 #' \bold{96}(12), 6745--6750.\cr
 #' 
-#' Yang, Y. and Zou, H. (2015), ``A Fast Unified Algorithm for Computing
-#' Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}.
-#' 25(6), 1129-1141.\cr BugReport: \url{https://github.com/emeryyi/gglasso}\cr
 #' @source The data are described in Alon et al. (1999) and can be freely
 #' downloaded from
 #' \url{http://microarray.princeton.edu/oncology/affydata/index.html}.
 #' @keywords datasets
 #' @examples
 #' 
-#' # load gglasso library
-#' library(gglasso)
+#' library(angularlasso)
 #' 
 #' # load data set
 #' data(colon)

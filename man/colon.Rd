@@ -31,8 +31,7 @@ genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2015)):
 }
 \examples{
 
-# load gglasso library
-library(gglasso)
+library(angularlasso)
 
 # load data set
 data(colon)
@@ -51,9 +50,5 @@ Ybarra, S. and Mack, D. and Levine, A.J. (1999). ``Broad patterns of gene
 expression revealed by clustering analysis of tumor and normal colon tissues
 probed by oligonucleotide arrays'', \emph{Proc. Natl. Acad. Sci. USA},
 \bold{96}(12), 6745--6750.\cr
-
-Yang, Y. and Zou, H. (2015), ``A Fast Unified Algorithm for Computing
-Group-Lasso Penalized Learning Problems,'' \emph{Statistics and Computing}.
-25(6), 1129-1141.\cr BugReport: \url{https://github.com/emeryyi/gglasso}\cr
 }
 \keyword{datasets}

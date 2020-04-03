@@ -26,8 +26,7 @@ genes using 5 basis B-splines, as described in Yang, Y. and Zou, H. (2015)).
 }
 \examples{
 
-# load gglasso library
-library(gglasso)
+library(angularlasso)
 
 # load data set
 data(bardet)

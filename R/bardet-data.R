@@ -28,8 +28,7 @@
 #' @keywords datasets
 #' @examples
 #' 
-#' # load gglasso library
-#' library(gglasso)
+#' library(angularlasso)
 #' 
 #' # load data set
 #' data(bardet)

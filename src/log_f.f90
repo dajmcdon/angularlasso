@@ -7,13 +7,7 @@
 ! SUBROUTINE ls_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 !                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! 
-! SUBROUTINE log_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-!                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
-! 
-! SUBROUTINE hsvm_f (delta,bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
-!                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
-! 
-! SUBROUTINE sqsvm_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
+! SUBROUTINE angular_f (bn,bs,ix,iy,gam,nobs,nvars,x,y,pf,dfmax,pmax,nlam,flmin,ulam,&
 !                     eps,maxit,intr,nalam,b0,beta,idx,nbeta,alam,npass,jerr)
 ! 
 ! INPUT ARGUMENTS:

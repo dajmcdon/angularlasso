@@ -121,8 +121,8 @@ coef.gglasso <- function(object, s = NULL, ...) {
 #' 
 #' @method predict gglasso
 #' @export
-predict.gglasso <- function(object, newx, s = NULL, type = c("class", 
-    "link"), ...) {
+predict.gglasso <- function(object, newx, s = NULL, type = c("link", 
+    "class"), ...) {
     type <- match.arg(type)
     loss <- class(object)[[2]]
     b0 <- t(as.matrix(object$b0))
@@ -148,9 +148,9 @@ predict.gglasso <- function(object, newx, s = NULL, type = c("class",
     nfit <- as.matrix(as.matrix(cbind2(1, newx)) %*% nbeta)
     if (loss %in% c("logit", "sqsvm", "hsvm")) {
         switch(type, link = nfit, class = ifelse(nfit > 0, 1, -1))
-    } else {
-        nfit
     }
+    if (loss == "ls") nfit
+    if (loss == "angular") b0 + 2*atan(nfit-b0)
 }
 
 

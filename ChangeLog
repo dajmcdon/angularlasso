@@ -1,6 +1,8 @@
-CHANGELOG - Record of Changes for gglasso
+CHANGELOG - Record of Changes for angularlasso
 Please find below the list of the various changes and improvements that were part of each successive update.
 
+1.5:
+* [added] Angularlasso function built on top of gglasso. SVM functions removed.
 
 1.4:
 * [updated] Author's email and reference.

@@ -1,9 +1,11 @@
-Package: gglasso
-Title: Group Lasso Penalized Learning Using a Unified BMD Algorithm
+Package: angularlasso
+Title: Group Lasso Penalized Learning for Angular Regression
 Version: 1.4
-Date: 2017-9-12
-Author: Yi Yang <yi.yang6@mcgill.ca>, Hui Zou <hzou@stat.umn.edu>
+Date: 2020-04-01
+Author: Daniel J. McDonald <dajmcdon@gmail.com
 Authors@R: c(
+  person("Daniel", "McDonald", email = "dajmcdon@gmail.com",
+  role = c("aut"), comment = "http://dajmcdon.github.io/"),
   person("Yi", "Yang", email = "yi.yang6@mcgill.ca",
   role = c("aut", "cre"), comment = "http://www.math.mcgill.ca/yyang/"),
   person("Hui", "Zou", email = "hzou@stat.umn.edu",
@@ -11,18 +13,14 @@ Authors@R: c(
   person("Sahir", "Bhatnagar", email = "sahir.bhatnagar@gmail.com",
   role = c("aut"), comment = "http://sahirbhatnagar.com/")
   )
-Description: A unified algorithm, blockwise-majorization-descent (BMD), for efficiently computing the solution paths of the group-lasso penalized least squares, logistic regression, Huberized SVM and squared SVM. The package is an implementation of Yang, Y. and Zou, H. (2015) DOI: <doi:10.1007/s11222-014-9498-5>.
+Description: A unified algorithm, blockwise-majorization-descent (BMD), for efficiently computing the solution paths of the group-lasso penalized least squares, logistic regression, and angular regression. The package is an implementation of Yang, Y. and Zou, H. (2015) DOI: <doi:10.1007/s11222-014-9498-5>.
 License: GPL-2
 Imports: methods
-URL: https://github.com/emeryyi/gglasso
-BugReports: https://github.com/emeryyi/gglasso/issues
-Packaged: 2017-9-12 11:11:11 UTC; yiyang
-Repository: CRAN
-Date/Publication: 2017-9-12 11:11:11
+URL: https://github.com/dajmcdon/angularlasso
+BugReports: https://github.com/angularlasso/issues
 RoxygenNote: 7.0.2
 Suggests: testthat,
     knitr,
     rmarkdown
 Encoding: UTF-8
 LazyData: TRUE
-VignetteBuilder: knitr

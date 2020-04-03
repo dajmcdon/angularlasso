@@ -4,8 +4,7 @@
 #' sequence of regularization parameters lambda.
 #'
 #' Note that the objective function for \code{"ls"} least squares is
-#' \deqn{RSS/(2*n) + lambda * penalty;} for \code{"hsvm"} Huberized squared
-#' hinge loss, \code{"sqsvm"} Squared hinge loss and \code{"logit"} logistic
+#' \deqn{RSS/(2*n) + lambda * penalty;} for  \code{"angular"} and \code{"logit"} logistic
 #' regression, the objective function is \deqn{-loglik/n + lambda * penalty.}
 #' Users can also tweak the penalty by choosing different penalty factor.
 #'
@@ -22,9 +21,8 @@
 #'   coefficients (see example below).
 #' @param loss a character string specifying the loss function to use, valid
 #'   options are: \itemize{ \item \code{"ls"} least squares loss (regression),
-#'   \item \code{"logit"} logistic loss (classification).  \item \code{"hsvm"}
-#'   Huberized squared hinge loss (classification), \item \code{"sqsvm"} Squared
-#'   hinge loss (classification), }Default is \code{"ls"}.
+#'   \item \code{"logit"} logistic loss (classification).  \item \code{"angular"}
+#'   Von-Mises loss (with atan predictor link), }Default is \code{"angular"}.
 #' @param nlambda the number of \code{lambda} values - default is 100.
 #' @param lambda.factor the factor for getting the minimal lambda in
 #'   \code{lambda} sequence, where \code{min(lambda)} = \code{lambda.factor} *
@@ -76,17 +74,11 @@
 #'   all lambda values} \item{jerr}{error flag, for warnings and errors, 0 if no
 #'   error.} \item{group}{a vector of consecutive integers describing the
 #'   grouping of the coefficients.}
-#' @author Yi Yang and Hui Zou\cr Maintainer: Yi Yang <yi.yang6@@mcgill.ca>
-#' @seealso \code{plot.gglasso}
-#' @references Yang, Y. and Zou, H. (2015), ``A Fast Unified Algorithm for
-#'   Computing Group-Lasso Penalized Learning Problems,'' \emph{Statistics and
-#'   Computing}. 25(6), 1129-1141.\cr BugReport:
-#'   \url{https://github.com/emeryyi/gglasso}\cr
+#' @seealso \code{plot.angularlasso}
 #' @keywords models regression
 #' @examples
 #'
-#' # load gglasso library
-#' library(gglasso)
+#' library(angularlasso)
 #'
 #' # load bardet data set
 #' data(bardet)
@@ -95,7 +87,7 @@
 #' group1 <- rep(1:20,each=5)
 #'
 #' # fit group lasso penalized least squares
-#' m1 <- gglasso(x=bardet$x,y=bardet$y,group=group1,loss="ls")
+#' m1 <- angularlasso(x=bardet$x,y=bardet$y,group=group1,loss="ls")
 #'
 #' # load colon data set
 #' data(colon)
@@ -104,14 +96,16 @@
 #' group2 <- rep(1:20,each=5)
 #'
 #' # fit group lasso penalized logistic regression
-#' m2 <- gglasso(x=colon$x,y=colon$y,group=group2,loss="logit")
+#' m2 <- angularlasso(x=colon$x,y=colon$y,group=group2,loss="logit")
 #'
 #' @export
-gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm", 
-    "hsvm","wls"), nlambda = 100, lambda.factor = ifelse(nobs < nvars, 0.05, 0.001), 
-    lambda = NULL, pf = sqrt(bs), weight = NULL, dfmax = as.integer(max(group)) + 
-        1, pmax = min(dfmax * 1.2, as.integer(max(group))), eps = 1e-08, maxit = 3e+08, 
-    delta,intercept=TRUE) {
+angularlasso <- function(
+  x, y, group = NULL, loss = c("angular","ls", "logit"), nlambda = 100, 
+  lambda.factor = ifelse(nobs < nvars, 0.05, 0.001), 
+  lambda = NULL, pf = sqrt(bs), weight = NULL, dfmax = as.integer(max(group)) + 1,
+  pmax = min(dfmax * 1.2, as.integer(max(group))), eps = ifelse(loss=="angular", 1e-4,1e-08),
+  maxit = 1e5, intercept=TRUE
+  ) {
     #################################################################################
     #\tDesign matrix setup, error checking
     this.call <- match.call()
@@ -138,13 +132,11 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
     if (!is.numeric(y)) 
         stop("The response y must be numeric. Factors must be converted to numeric")
     
-    c1 <- loss %in% c("logit", "sqsvm", "hsvm")
-    c2 <- any(y %in% c(-1, 1) == FALSE)
+    c1 <- loss == "angular"
+    c2 <- any(y < -pi || y > pi)
     if (c1 && c2) 
-        stop("Classification method requires the response y to be in {-1,1}")
+        stop("Angular lasso requires y in [-pi,pi]")
 	
-    if (loss=="wls" & !is.matrix(weight)) 
-        stop("User must specify weight matrix for (loss='wls')")
     #################################################################################
     #    group setup
     if (is.null(group)) {
@@ -205,22 +197,17 @@ gglasso <- function(x, y, group = NULL, loss = c("ls", "logit", "sqsvm",
     fit <- switch(loss, 
 	ls = ls(bn, bs, ix, iy, nobs, nvars, x, y, pf, 
         dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr), 
-	logit = logit(bn, 
+	logit = ls(bn, bs, ix, iy, nobs, nvars, x, y, pf, 
+	        dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr), 
+	angular = angular(bn, 
         bs, ix, iy, nobs, nvars, x, y, pf, dfmax, pmax, nlam, flmin, 
         ulam, eps, maxit, vnames, group, intr), 
-	sqsvm = sqsvm(bn, bs, ix, iy, 
-        nobs, nvars, x, y, pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, 
-        group, intr), 
-	hsvm = hsvm(delta, bn, bs, ix, iy, nobs, nvars, x, y, 
-        pf, dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr),
-	wls = wls(bn, bs, ix, iy, nobs, nvars, x, y, pf, weight, 
-        dfmax, pmax, nlam, flmin, ulam, eps, maxit, vnames, group, intr)
 		)
     #################################################################################
     # output
     if (is.null(lambda)) 
         fit$lambda <- lamfix(fit$lambda)
     fit$call <- this.call
-    class(fit) <- c("gglasso", class(fit))
+    class(fit) <- c("angularlasso", class(fit))
     fit
 } 
