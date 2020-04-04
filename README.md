@@ -1,4 +1,4 @@
-# AngularGlasso
+# AngularLasso
 
 An R package for fitting the group lasso to angular data
 
