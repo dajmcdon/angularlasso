@@ -85,9 +85,6 @@ value. Default is 3e8. If models do not converge, consider increasing
 \code{maxit}.}
 
 \item{intercept}{Whether to include intercept in the model. Default is TRUE.}
-
-\item{delta}{the parameter \eqn{\delta}{delta} in \code{"hsvm"} (Huberized
-squared hinge loss). Default is 1.}
 }
 \value{
 An object with S3 class \code{\link{gglasso}}.  \item{call}{the call

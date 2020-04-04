@@ -61,8 +61,6 @@
 #' @param maxit maximum number of outer-loop iterations allowed at fixed lambda
 #'   value. Default is 3e8. If models do not converge, consider increasing
 #'   \code{maxit}.
-#' @param delta the parameter \eqn{\delta}{delta} in \code{"hsvm"} (Huberized
-#'   squared hinge loss). Default is 1.
 #' @param intercept Whether to include intercept in the model. Default is TRUE.
 #' @return An object with S3 class \code{\link{gglasso}}.  \item{call}{the call
 #'   that produced this object} \item{b0}{intercept sequence of length
@@ -163,11 +161,6 @@ angularlasso <- function(
     group <- as.integer(group)
     #################################################################################
     #parameter setup
-    if (missing(delta)) 
-        delta <- 1
-    if (delta < 0) 
-        stop("delta must be non-negtive")
-    delta <- as.double(delta)
     if (length(pf) != bn) 
         stop("The size of group-lasso penalty factor must be same as the number of groups")
     maxit <- as.integer(maxit)
